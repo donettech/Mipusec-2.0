@@ -8,6 +8,7 @@ import 'package:kf_drawer/kf_drawer.dart';
 import 'package:mipusec2/animations/FadeAnimation.dart';
 import 'package:mipusec2/screens/pdf.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mipusec2/screens/pinned.dart';
 import 'package:path_provider/path_provider.dart';
 
 bool downloading = false;
@@ -18,6 +19,8 @@ String fileName = "";
 String rootUrl = "http://mpsc.jesdamizoram.com/";
 String preConcat =
     "/storage/emulated/0/Android/data/com.example.mipusec2/files/Noticfications/";
+
+String pinnedItem = '';
 
 class NotificationModel {
   String id;
@@ -57,11 +60,13 @@ class _HomePageState extends State<HomePage> {
     String folderName = 'Notifications';
     final Directory mDirectory = Directory('$directory/$folderName/');
     if (await mDirectory.exists()) {
-      setState(() {
-        file = Directory("$directory/Notifications/")
-            .listSync(); //use your folder name instead of resume.
-        compare();
-      });
+      if (this.mounted) {
+        setState(() {
+          file = Directory("$directory/Notifications/")
+              .listSync(); //use your folder name instead of resume.
+          compare();
+        });
+      }
     } else {
       await mDirectory.create(recursive: true);
     }
@@ -91,6 +96,20 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color(0xFF7A9BEE),
+        floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.ac_unit),
+            onPressed: () {
+              if (pinnedItem == "") {
+                setState(() {
+                  pinnedItem =
+                      "This is the text for pinned item let it be a long one to see what happens when it overflows the text widget width";
+                });
+              } else {
+                setState(() {
+                  pinnedItem = "";
+                });
+              }
+            }),
         body: Container(
           child: Column(
             children: <Widget>[
@@ -218,7 +237,46 @@ class _HomePageState extends State<HomePage> {
                 flex: 5,
               ),
               Expanded(
-                  flex: 5,
+                  flex: pinnedItem != '' ? 1 : 0,
+                  child: Padding(
+                    padding: const EdgeInsets.all(3.0),
+                    child: Container(
+                      decoration: pinnedItem != ''
+                          ? BoxDecoration(
+                              color: Colors.blue[700],
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10),
+                                  bottomLeft: Radius.circular(10),
+                                  bottomRight: Radius.circular(10)),
+                            )
+                          : BoxDecoration(),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (context) =>
+                                            new PinnedPage(pinnedItem)));
+                              },
+                              child: Text(
+                                pinnedItem,
+                                style: TextStyle(color: Colors.white),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: true,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )),
+              Expanded(
+                  flex: 4,
                   child: Container(
                     decoration: BoxDecoration(
                       color: Color(0xFF333366),

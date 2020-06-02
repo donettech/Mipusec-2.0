@@ -249,6 +249,7 @@ class _ExaminationPageState extends State<ExaminationPage> {
                     backgroundColor: Color(0xFF333366),
                     elevation: 0,
                     floating: true,
+                    pinned: false,
                     leading: !isSearching
                         ? IconButton(
                             icon: Icon(Icons.menu),
