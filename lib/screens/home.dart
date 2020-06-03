@@ -14,6 +14,7 @@ bool downloading = false;
 String progressString = "";
 String directory;
 List file = new List();
+bool dataGet = false;
 String fileName = "";
 String rootUrl = "http://mpsc.jesdamizoram.com/";
 String preConcat =
@@ -26,6 +27,7 @@ class NotificationModel {
   String link;
   bool downloaded;
   String localLink;
+
   NotificationModel(
       this.id, this.title, this.content, this.link, this.downloaded,
       [this.localLink]);
@@ -38,6 +40,7 @@ class HomePage extends KFDrawerContent {
 
 class _HomePageState extends State<HomePage> {
   List<NotificationModel> mData = [];
+
   Future getData() async {
     var response = await http.get(
         "http://mpsc.jesdamizoram.com/HeroApi/v1/Api.php?apicall=getnotification");
@@ -48,6 +51,9 @@ class _HomePageState extends State<HomePage> {
           u['id'].toString(), u['title'], u['content'], u['link'], false);
       mData.add(notiItem);
     }
+    setState(() {
+      dataGet = true;
+    });
     _listofFiles();
     return mData;
   }
@@ -220,62 +226,52 @@ class _HomePageState extends State<HomePage> {
               Expanded(
                   flex: 5,
                   child: Container(
-                    decoration: BoxDecoration(
-                      color: Color(0xFF333366),
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20)),
-                    ),
-                    child: FutureBuilder(
-                        future: getData(),
-                        builder:
-                            (BuildContext context, AsyncSnapshot snapshot) {
-                          if (snapshot.hasData) {
-                            return ListView.builder(
-                                itemCount: snapshot.data.length,
-                                // shrinkWrap: true,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      if (snapshot.data[index].downloaded) {
-                                        Navigator.push(
-                                            context,
-                                            new MaterialPageRoute(
-                                                builder: (context) =>
-                                                    new PDFPage(
-                                                        snapshot.data[index]
-                                                            .localLink,
-                                                        snapshot.data[index]
-                                                            .downloaded)));
-                                      } else {
-                                        Navigator.push(
-                                            context,
-                                            new MaterialPageRoute(
-                                                builder: (context) =>
-                                                    new PDFPage(
-                                                        snapshot
-                                                            .data[index].link,
-                                                        snapshot.data[index]
-                                                            .downloaded)));
-                                      }
-                                    },
-                                    child: ListTile(
-                                      title: Text(
-                                        snapshot.data[index].title,
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      subtitle: Divider(color: Colors.grey),
-                                    ),
-                                  );
-                                });
-                          } else {
-                            return Center(
+                      decoration: BoxDecoration(
+                        color: Color(0xFF333366),
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(20)),
+                      ),
+                      child: dataGet
+                          ? Container(
+                              width: double.infinity,
+                              child: Center(
                                 child: CircularProgressIndicator(
-                              backgroundColor: Colors.white,
-                            ));
-                          }
-                        }),
-                  ))
+                                  backgroundColor: Colors.red,
+                                ),
+                              ),
+                            )
+                          : ListView.builder(
+                              itemCount: mData.length,
+                              // shrinkWrap: true,
+                              itemBuilder: (BuildContext context, int index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    if (mData[index].downloaded) {
+                                      Navigator.push(
+                                          context,
+                                          new MaterialPageRoute(
+                                              builder: (context) => new PDFPage(
+                                                  mData[index].localLink,
+                                                  mData[index].downloaded)));
+                                    } else {
+                                      Navigator.push(
+                                          context,
+                                          new MaterialPageRoute(
+                                              builder: (context) => new PDFPage(
+                                                  mData[index].link,
+                                                  mData[index].downloaded)));
+                                    }
+                                  },
+                                  child: ListTile(
+                                    title: Text(
+                                      mData[index].title,
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    subtitle: Divider(color: Colors.grey),
+                                  ),
+                                );
+                              })))
             ],
           ),
         ));
