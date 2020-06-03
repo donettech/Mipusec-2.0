@@ -61,7 +61,7 @@ class _AdvertisementPageState extends State<AdvertisementPage> {
   bool isSearching = false;
   bool expanded = false;
   bool isLoading = true;
-
+//https://github.com/xuala69/Mipusec-2.0.git
   getAds() async {
     List<AdvertisementModel> mAds = [];
     var response = await http.get(url);
