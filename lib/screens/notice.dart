@@ -5,11 +5,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:kf_drawer/kf_drawer.dart';
 import 'package:http/http.dart' as http;
+import 'package:mipusec2/model_classes/notification_model.dart';
 import 'package:mipusec2/screens/pdf.dart';
 import 'package:path_provider/path_provider.dart';
 
 String url =
-    "http://mpsc.jesdamizoram.com/HeroApi/v1/Api.php?apicall=getnotification";
+    "http://mpsc.jesdamizoram.com/HeroApi/v1/Api.php?apicall=getmenunotification";
 
 int i = 0;
 List<NotificationModel> mNotice = [];
@@ -22,18 +23,6 @@ String fileName = "";
 String rootUrl = "http://mpsc.jesdamizoram.com/";
 String preConcat =
     "/storage/emulated/0/Android/data/com.example.mipusec2/files/Notifications/";
-
-class NotificationModel {
-  int id;
-  String title;
-  String content;
-  String link;
-  bool downloaded;
-  String localLink;
-  NotificationModel(
-      this.id, this.title, this.content, this.link, this.downloaded,
-      [this.localLink]);
-}
 
 class NoticePage extends KFDrawerContent {
   @override
@@ -54,7 +43,7 @@ class _NoticePageState extends State<NoticePage> {
     var menuresult = mdata['notification'];
     for (var u in menuresult) {
       NotificationModel menuresultItem = NotificationModel(
-          u['id'], u['title'], u['content'], u['link'], false);
+          u['id'].toString(), u['title'], u['content'], u['link'], false);
       mResults.add(menuresultItem);
     }
     return mResults;
@@ -306,6 +295,8 @@ class _NoticePageState extends State<NoticePage> {
                 children: <Widget>[
                   new Text(title,
                       textAlign: TextAlign.justify,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                           fontSize: 13,
                           color: Colors.white,

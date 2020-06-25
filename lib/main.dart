@@ -114,7 +114,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                 end: Alignment.bottomRight,
                 colors: [
                   Color.fromRGBO(255, 255, 255, 1.0),
-                  Color(0xFF333366)
+                  Color(0xff3D496A)
                   //Color.fromRGBO(44, 72, 171, 1.0)
                 ],
                 tileMode: TileMode.repeated)),

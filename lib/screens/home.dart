@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:kf_drawer/kf_drawer.dart';
 import 'package:mipusec2/animations/FadeAnimation.dart';
+import 'package:mipusec2/model_classes/notification_model.dart';
+import 'package:mipusec2/model_classes/pinned_notice_model.dart';
 import 'package:mipusec2/screens/pdf.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mipusec2/screens/pinned.dart';
@@ -22,18 +24,6 @@ String preConcat =
 
 String pinnedItem = '';
 
-class NotificationModel {
-  String id;
-  String title;
-  String content;
-  String link;
-  bool downloaded;
-  String localLink;
-  NotificationModel(
-      this.id, this.title, this.content, this.link, this.downloaded,
-      [this.localLink]);
-}
-
 class HomePage extends KFDrawerContent {
   @override
   _HomePageState createState() => _HomePageState();
@@ -41,6 +31,7 @@ class HomePage extends KFDrawerContent {
 
 class _HomePageState extends State<HomePage> {
   List<NotificationModel> mData = [];
+  PinnedNotice mPinned = PinnedNotice();
   void getData() async {
     var response = await http.get(
         "http://mpsc.jesdamizoram.com/HeroApi/v1/Api.php?apicall=getnotification");
@@ -55,9 +46,35 @@ class _HomePageState extends State<HomePage> {
     //return mData;
   }
 
+  void getPinnedNotice() async {
+    var response = await http.get(
+        "http://mpsc.jesdamizoram.com/HeroApi/v1/Api.php?apicall=getpinnednotification");
+    var mdata = json.decode(response.body);
+    var notifications = mdata['notification'];
+    try {
+      mPinned = PinnedNotice(
+          id: notifications[0]['id'],
+          title: notifications[0]['title'],
+          contents: notifications[0]['contents']);
+      setState(() {
+        pinnedItem = mPinned.title;
+      });
+    } catch (e) {
+      print('Error reading pinned notice: $e');
+    }
+    /* for (var u in notifications) {
+      NotificationModel notiItem = NotificationModel(
+          u['id'].toString(), u['title'], u['content'], u['link'], false);
+      mData.add(notiItem);
+    }
+    _listofFiles(); */
+    //return mData;
+  }
+
   @override
   void initState() {
     getData();
+    getPinnedNotice();
     super.initState();
   }
 
@@ -100,285 +117,335 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Color(0xFF7A9BEE),
-        floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.ac_unit),
-            onPressed: () {
-              if (pinnedItem == "") {
-                setState(() {
-                  pinnedItem =
-                      "This is the text for pinned item let it be a long one to see what happens when it overflows the text widget width";
-                });
-              } else {
-                setState(() {
-                  pinnedItem = "";
-                });
-              }
-            }),
-        body: Container(
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          alignment: Alignment.bottomRight,
-                          image: AssetImage('assets/offce.png'),
-                          fit: BoxFit.scaleDown)),
-                  child: Stack(
-                    children: <Widget>[
-                      Positioned(
-                          left: -5,
-                          width: 50,
-                          top: 20,
-                          height: 50,
-                          child: IconButton(
-                              icon: Icon(Icons.menu),
-                              color: Colors.blue[900],
-                              onPressed: widget.onMenuPressed)),
-                      Positioned(
-                          top: 35,
-                          left: 135,
-                          width: 93,
-                          height: 93,
-                          child: FadeAnimation(
-                              1,
-                              Container(
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            'assets/mpsc_icon_round.png'))),
-                              ))),
-                      Positioned(
-                        left: 139,
-                        top: 130,
-                        child: FadeAnimation(
-                            1.5,
-                            Container(
-                              child: Center(
-                                child: Text(
-                                  "MIPUSEC",
-                                  style: GoogleFonts.openSans(
-                                      textStyle: TextStyle(
-                                          color: Color(0xFF333366),
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.normal)),
+    return SafeArea(
+      child: Scaffold(
+          backgroundColor: Color(0xff3D496A),
+          // Color(0xff3c466a),
+          body: Container(
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  flex: 4,
+                  child: Container(
+                    padding: EdgeInsets.only(left: 00),
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            alignment: Alignment.center,
+                            image: AssetImage('assets/background.png'),
+                            fit: BoxFit.scaleDown)),
+                    child: Stack(
+                      alignment: Alignment.topCenter,
+                      children: <Widget>[
+                        Positioned(
+                            left: 8,
+                            top: 30,
+                            child: IconButton(
+                                icon: Icon(
+                                  Icons.menu,
+                                  size: 25,
                                 ),
-                              ),
-                            )),
-                      ),
-                      Positioned(
-                        left: 80,
-                        top: 160,
-                        child: FadeAnimation(
-                            1.8,
-                            Container(
-                              child: Center(
-                                  child: RichText(
-                                text: new TextSpan(
-                                  // Note: Styles for TextSpans must be explicitly defined.
-                                  // Child text spans will inherit styles from parent
-                                  style: new TextStyle(
-                                    fontSize: 14.0,
-                                    color: Colors.black,
-                                  ),
-                                  children: <TextSpan>[
-                                    new TextSpan(
-                                        text: 'M',
-                                        style: TextStyle(
-                                            fontFamily: 'Segoe',
-                                            fontSize: 16,
-                                            color: Color(0xFF333366))),
-                                    new TextSpan(
-                                        text: 'izoram ',
-                                        style: GoogleFonts.ebGaramond(
-                                            textStyle: TextStyle(
-                                                fontSize: 16,
-                                                color: Color(0xFF333366)))),
-                                    new TextSpan(
-                                        text: 'P',
-                                        style: TextStyle(
-                                            fontFamily: 'Segoe',
-                                            fontSize: 16,
-                                            color: Color(0xFF333366))),
-                                    new TextSpan(
-                                        text: 'ublic ',
-                                        style: GoogleFonts.ebGaramond(
-                                            textStyle: TextStyle(
-                                                fontSize: 16,
-                                                color: Color(0xFF333366)))),
-                                    new TextSpan(
-                                        text: 'S',
-                                        style: TextStyle(
-                                            color: Color(0xFF333366),
-                                            fontFamily: 'Segoe',
-                                            fontSize: 16)),
-                                    new TextSpan(
-                                        text: 'ervice ',
-                                        style: GoogleFonts.ebGaramond(
-                                            textStyle: TextStyle(
-                                                fontSize: 16,
-                                                color: Color(0xFF333366)))),
-                                    new TextSpan(
-                                        text: 'C',
-                                        style: TextStyle(
-                                            fontFamily: 'Segoe',
-                                            fontSize: 16,
-                                            color: Color(0xFF333366))),
-                                    new TextSpan(
-                                        text: 'ommission ',
-                                        style: GoogleFonts.ebGaramond(
-                                            textStyle: TextStyle(
-                                                fontSize: 16,
-                                                color: Color(0xFF333366)))),
-                                  ],
-                                ),
-                              )),
-                            )),
-                      ),
-                    ],
-                  ),
-                ),
-                flex: 5,
-              ),
-              pinnedItem != ''
-                  ? Expanded(
-                      flex: pinnedItem != '' ? 1 : 0,
-                      child: Padding(
-                        padding: const EdgeInsets.all(3.0),
-                        child: Container(
-                          decoration: pinnedItem != ''
-                              ? BoxDecoration(
-                                  color: Colors.blue[800],
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(5),
-                                      topRight: Radius.circular(5),
-                                      bottomLeft: Radius.circular(5),
-                                      bottomRight: Radius.circular(5)),
-                                )
-                              : BoxDecoration(),
-                          child: Column(
-                            children: <Widget>[
-                              Text(
-                                'Pinned Notification',
-                                style: TextStyle(color: Color(0xFF333366)),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 5, right: 5),
-                                child: Container(
-                                  height: 0.5,
-                                  color: Colors.black54,
-                                ),
-                              ),
-                              Spacer(),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      new MaterialPageRoute(
-                                          builder: (context) =>
-                                              new PinnedPage(pinnedItem)));
-                                },
-                                child: Container(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 5, right: 5),
+                                color: Colors.white,
+                                onPressed: widget.onMenuPressed)),
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Image.asset(
+                              'assets/mpsc_icon_round.png',
+                              height: MediaQuery.of(context).size.width * 0.18,
+                              width: MediaQuery.of(context).size.width * 0.18,
+                            ),
+                            FadeAnimation(
+                                1.5,
+                                Container(
+                                  child: Center(
                                     child: Text(
-                                      pinnedItem,
-                                      style: TextStyle(color: Colors.white),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      softWrap: true,
+                                      "MIPUSEC",
+                                      style: GoogleFonts.openSans(
+                                          textStyle: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.normal)),
                                     ),
                                   ),
-                                ),
-                              ),
-                              Spacer()
-                            ],
-                          ),
+                                )),
+                            mipusecLong()
+                          ],
                         ),
-                      ))
-                  : Container(),
-              Expanded(
-                  flex: pinnedItem != '' ? 4 : 5,
-                  child: Container(
-                      decoration: BoxDecoration(
-                        color: Color(0xFF333366),
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20)),
-                      ),
-                      child: mData.length == 0
-                          ? Container(
-                              child: Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            )
-                          : ListView.builder(
-                              itemCount: mData.length,
-                              // shrinkWrap: true,
-                              itemBuilder: (BuildContext context, int index) {
-                                return GestureDetector(
-                                    onTap: () {
-                                      if (mData[index].downloaded) {
-                                        Navigator.push(
-                                            context,
-                                            new MaterialPageRoute(
-                                                builder: (context) =>
-                                                    new PDFPage(
-                                                        mData[index].localLink,
-                                                        mData[index]
-                                                            .downloaded)));
-                                      } else {
-                                        Navigator.push(
-                                            context,
-                                            new MaterialPageRoute(
-                                                builder: (context) =>
-                                                    new PDFPage(
-                                                        mData[index].link,
-                                                        mData[index]
-                                                            .downloaded)));
-                                      }
-                                    },
-                                    child: Container(
-                                      height: 40,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 5),
+                        /* Positioned(
+                          left: MediaQuery.of(context).size.width * 0.375,
+                          top: 120,
+                          child: 
+                        ), */
+                        /* Positioned(
+                            left: MediaQuery.of(context).size.width * 0.15,
+                            top: 150,
+                            child:), */
+                      ],
+                    ),
+                  ),
+                ),
+                pinnedItem != ''
+                    ? Expanded(
+                        flex: pinnedItem != '' ? 1 : 0,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(8, 5, 3, 5),
+                          child: Container(
+                            decoration: pinnedItem != ''
+                                ? BoxDecoration(
+                                    color: Colors.blue[800],
+                                    gradient: LinearGradient(colors: [
+                                      Color(0x3894affc),
+                                      const Color(0x383d3f72)
+                                    ]),
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(5),
+                                        topRight: Radius.circular(5),
+                                        bottomLeft: Radius.circular(5),
+                                        bottomRight: Radius.circular(5)),
+                                  )
+                                : BoxDecoration(),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  width: 2,
+                                  color: Color(0xFFde69b8),
+                                  height: double.infinity,
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      /*  Text(
+                                        'Pinned Notification',
+                                        style:
+                                            TextStyle(color: Color(0xFF333366)),
+                                      ), */
+                                      /*  Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 5, right: 5),
+                                        child: Container(
+                                          height: 0.5,
+                                          color: Colors.black54,
+                                        ),
+                                      ), */
+                                      Spacer(),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              new MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      new PinnedPage(mPinned)));
+                                        },
+                                        child: Container(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 5, right: 8),
                                             child: Text(
-                                              mData[index].title,
-                                              maxLines: 1,
+                                              pinnedItem,
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 15,
+                                              ),
+                                              maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                               softWrap: true,
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 12),
                                             ),
                                           ),
-                                          Divider(color: Colors.grey)
-                                        ],
+                                        ),
                                       ),
-                                    )
+                                      Spacer()
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ))
+                    : Container(
+                        padding: EdgeInsets.only(top: 10),
+                      ),
+                Expanded(
+                    flex: pinnedItem != '' ? 4 : 5,
+                    child: Container(
+                        padding: EdgeInsets.only(top: 5),
+                        margin: EdgeInsets.only(left: 8, right: 5, bottom: 5),
+                        decoration: BoxDecoration(
+                          // color: Color(0xFF333366),
+                          gradient: LinearGradient(colors: [
+                            Color(0xFF535E7F),
+                            //Color(0xff535e7f)
+                            Color(0xff3c466a),
+                          ]),
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20)),
+                        ),
+                        child: mData.length == 0
+                            ? Container(
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              )
+                            : ListView.builder(
+                                itemCount: mData.length,
+                                // shrinkWrap: true,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return GestureDetector(
+                                      onTap: () {
+                                        if (mData[index].downloaded) {
+                                          Navigator.push(
+                                              context,
+                                              new MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      new PDFPage(
+                                                          mData[index]
+                                                              .localLink,
+                                                          mData[index]
+                                                              .downloaded)));
+                                        } else {
+                                          Navigator.push(
+                                              context,
+                                              new MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      new PDFPage(
+                                                          mData[index].link,
+                                                          mData[index]
+                                                              .downloaded)));
+                                        }
+                                      },
+                                      child: Container(
+                                        height: 40,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Row(
+                                              children: <Widget>[
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 7, right: 5),
+                                                  child: Icon(
+                                                    Icons.picture_as_pdf,
+                                                    color: Color(0xFFF686B5),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 5),
+                                                    child: Text(
+                                                      mData[index].title,
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      softWrap: true,
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 15),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 3, right: 3),
+                                              child: Divider(
+                                                  color: Colors.deepOrange
+                                                      .withOpacity(.5)),
+                                            )
+                                          ],
+                                        ),
+                                      )
 
-                                    /* ListTile(
-                                      title: Text(
-                                        snapshot.data[index].title,
-                                        style: TextStyle(color: Colors.white,fontSize: 12),
-                                      ),
-                                     // subtitle: Divider(color: Colors.grey),
-                                    ), */
-                                    );
-                              })))
-            ],
-          ),
+                                      /* ListTile(
+                                        title: Text(
+                                          snapshot.data[index].title,
+                                          style: TextStyle(color: Colors.white,fontSize: 12),
+                                        ),
+                                       // subtitle: Divider(color: Colors.grey),
+                                      ), */
+                                      );
+                                })))
+              ],
+            ),
+          )),
+    );
+  }
+
+  Widget mipusecLong() {
+    return FadeAnimation(
+        1.8,
+        Container(
+          child: Center(
+              child: RichText(
+            text: new TextSpan(
+              // Note: Styles for TextSpans must be explicitly defined.
+              // Child text spans will inherit styles from parent
+              style: new TextStyle(
+                fontSize: 20.0,
+                color: Colors.black,
+              ),
+              children: <TextSpan>[
+                new TextSpan(
+                    text: 'M',
+                    style: TextStyle(
+                        fontFamily: 'Segoe',
+                        fontSize: 20,
+                        color: Colors.white)),
+                new TextSpan(
+                    text: 'izoram ',
+                    style: GoogleFonts.ebGaramond(
+                        textStyle:
+                            TextStyle(fontSize: 20, color: Colors.white))),
+                new TextSpan(
+                    text: 'P',
+                    style: TextStyle(
+                        fontFamily: 'Segoe',
+                        fontSize: 20,
+                        color: Colors.white)),
+                new TextSpan(
+                    text: 'ublic ',
+                    style: GoogleFonts.ebGaramond(
+                        textStyle:
+                            TextStyle(fontSize: 20, color: Colors.white))),
+                new TextSpan(
+                    text: 'S',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'Segoe',
+                        fontSize: 20)),
+                new TextSpan(
+                    text: 'ervice ',
+                    style: GoogleFonts.ebGaramond(
+                        textStyle:
+                            TextStyle(fontSize: 20, color: Colors.white))),
+                new TextSpan(
+                    text: 'C',
+                    style: TextStyle(
+                        fontFamily: 'Segoe',
+                        fontSize: 20,
+                        color: Colors.white)),
+                new TextSpan(
+                    text: 'ommission ',
+                    style: GoogleFonts.ebGaramond(
+                        textStyle:
+                            TextStyle(fontSize: 20, color: Colors.white))),
+              ],
+            ),
+          )),
         ));
   }
 }

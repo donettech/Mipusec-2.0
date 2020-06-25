@@ -401,6 +401,8 @@ class _ResultsPageState extends State<ResultsPage> {
                 children: <Widget>[
                   new Text(title,
                       textAlign: TextAlign.justify,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                           fontSize: 13,
                           color: Colors.white,
