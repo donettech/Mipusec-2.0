@@ -10,6 +10,7 @@ import 'package:mipusec2/screens/notice.dart';
 import 'package:mipusec2/screens/results.dart';
 import 'package:mipusec2/screens/syllabus.dart';
 import 'package:mipusec2/utils/class_builder.dart';
+import 'package:mipusec2/utils/size_config.dart';
 
 void main() {
   ClassBuilder.registerClasses();
@@ -19,16 +20,21 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(primarySwatch: Colors.blueGrey),
-      home: MainWidget(),
-      /* home: SplashScreen.navigate(
+    return LayoutBuilder(builder: (context, constraints) {
+      return OrientationBuilder(builder: (context, orientation) {
+        SizeConfig().init(constraints, orientation);
+        return MaterialApp(
+          theme: ThemeData(primarySwatch: Colors.blueGrey),
+          home: MainWidget(),
+          /* home: SplashScreen.navigate(
         name: 'assets/splash.flr',
         next: (context) => MainWidget(),
         until: () => Future.delayed(Duration(seconds: 3)),
         startAnimation: 'animate',
       ), */
-    );
+        );
+      });
+    });
   }
 }
 

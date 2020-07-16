@@ -36,7 +36,9 @@ class _PDFPageState extends State<PDFPage> {
     } catch (e) {
       print('Error opening pdf: $e');
     }
-    setState(() => _isLoading = false);
+    if (mounted) {
+      setState(() => _isLoading = false);
+    }
   }
 
   @override
@@ -51,7 +53,11 @@ class _PDFPageState extends State<PDFPage> {
             Center(
                 child: _isLoading
                     ? Center(child: CircularProgressIndicator())
-                    : PDFViewer(document: document)),
+                    : PDFViewer(
+                        document: document,
+                        showPicker: false,
+                        showNavigation: false,
+                      )),
           ],
         ),
       ),

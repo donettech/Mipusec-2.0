@@ -5,39 +5,30 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:kf_drawer/kf_drawer.dart';
 import 'package:http/http.dart' as http;
+import 'package:mipusec2/model_classes/syllabus.dart';
 import 'package:mipusec2/screens/pdf.dart';
+import 'package:mipusec2/utils/size_config.dart';
 import 'package:path_provider/path_provider.dart';
 
-bool downloading = false;
-String progressString = "";
-String directory;
-List file = new List();
-String fileName = "";
-String rootUrl = "http://mpsc.jesdamizoram.com/";
-String preConcat =
-    "/storage/emulated/0/Android/data/com.example.mipusec2/files/Syllabus/";
-
-String url =
-    "http://mpsc.jesdamizoram.com/HeroApi/v1/Api.php?apicall=getmenusyllabus";
-
-class SyllabusModel {
-  String syllabusId;
-  String name;
-  int publish;
-  String link;
-  bool downloaded;
-  String localLink;
-  SyllabusModel(
-      this.syllabusId, this.name, this.publish, this.link, this.downloaded,
-      [this.localLink]);
-}
-
+// ignore: must_be_immutable
 class SyllabusPage extends KFDrawerContent {
   @override
   _SyllabusPageState createState() => _SyllabusPageState();
 }
 
 class _SyllabusPageState extends State<SyllabusPage> {
+  bool downloading = false;
+  String progressString = "";
+  String directory;
+  List file = new List();
+  String fileName = "";
+  String rootUrl = "http://mpsc.jesdamizoram.com/";
+  String preConcat =
+      "/storage/emulated/0/Android/data/com.example.mipusec2/files/Syllabus/";
+
+  String url =
+      "http://mpsc.jesdamizoram.com/HeroApi/v1/Api.php?apicall=getmenusyllabus";
+
   List<SyllabusModel> mSyllabus = [];
   List<SyllabusModel> filteredSyllabusList = [];
   bool isSearching = false;
@@ -137,7 +128,7 @@ class _SyllabusPageState extends State<SyllabusPage> {
 
   @override
   void initState() {
-     super.initState();
+    super.initState();
     getData();
   }
 
@@ -317,7 +308,7 @@ class _SyllabusPageState extends State<SyllabusPage> {
                   new Text(title,
                       textAlign: TextAlign.justify,
                       style: TextStyle(
-                          fontSize: 13,
+                          fontSize: SizeConfig.textMultiplier * 2.19,
                           color: Colors.white,
                           fontWeight: FontWeight.w600)),
                 ],
@@ -332,8 +323,10 @@ class _SyllabusPageState extends State<SyllabusPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       new Text('Download: ',
-                          style:
-                              TextStyle(color: Colors.grey[300], fontSize: 10)),
+                          style: TextStyle(
+                            color: Colors.grey[300],
+                            fontSize: SizeConfig.textMultiplier * 1.69,
+                          )),
                       new Container(width: 5.0),
                       downloaded
                           ? Icon(

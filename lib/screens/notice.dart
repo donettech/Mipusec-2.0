@@ -7,29 +7,31 @@ import 'package:kf_drawer/kf_drawer.dart';
 import 'package:http/http.dart' as http;
 import 'package:mipusec2/model_classes/notification_model.dart';
 import 'package:mipusec2/screens/pdf.dart';
+import 'package:mipusec2/utils/size_config.dart';
 import 'package:path_provider/path_provider.dart';
 
-String url =
-    "http://mpsc.jesdamizoram.com/HeroApi/v1/Api.php?apicall=getmenunotification";
-
-int i = 0;
-List<NotificationModel> mNotice = [];
-
-bool downloading = false;
-String progressString = "";
-String directory;
-List file = new List();
-String fileName = "";
-String rootUrl = "http://mpsc.jesdamizoram.com/";
-String preConcat =
-    "/storage/emulated/0/Android/data/com.example.mipusec2/files/Notifications/";
-
+// ignore: must_be_immutable
 class NoticePage extends KFDrawerContent {
   @override
   _NoticePageState createState() => _NoticePageState();
 }
 
 class _NoticePageState extends State<NoticePage> {
+  String url =
+      "http://mpsc.jesdamizoram.com/HeroApi/v1/Api.php?apicall=getmenunotification";
+
+  int i = 0;
+  List<NotificationModel> mNotice = [];
+
+  bool downloading = false;
+  String progressString = "";
+  String directory;
+  List file = new List();
+  String fileName = "";
+  String rootUrl = "http://mpsc.jesdamizoram.com/";
+  String preConcat =
+      "/storage/emulated/0/Android/data/com.example.mipusec2/files/Notifications/";
+
   List<NotificationModel> myNotice = [];
   List<NotificationModel> filteredNoticeList = [];
   bool isSearching = false;
@@ -298,7 +300,7 @@ class _NoticePageState extends State<NoticePage> {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                          fontSize: 13,
+                          fontSize: SizeConfig.textMultiplier * 2.19,
                           color: Colors.white,
                           fontWeight: FontWeight.w600)),
                 ],
@@ -313,8 +315,10 @@ class _NoticePageState extends State<NoticePage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       new Text('Download: ',
-                          style:
-                              TextStyle(color: Colors.grey[300], fontSize: 10)),
+                          style: TextStyle(
+                            color: Colors.grey[300],
+                            fontSize: SizeConfig.textMultiplier * 1.69,
+                          )),
                       new Container(width: 5.0),
                       downloaded
                           ? Icon(

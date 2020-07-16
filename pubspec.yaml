@@ -26,6 +26,7 @@ dependencies:
   google_fonts: ^1.0.0
   path_provider: ^1.6.7
   dio: ^3.0.9
+  loading_animations: ^2.1.0
   firebase_messaging: ^6.0.13
  
 

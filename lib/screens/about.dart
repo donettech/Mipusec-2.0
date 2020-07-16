@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'dart:convert';
 
 import 'package:mipusec2/utilities/clipper.dart';
+import 'package:mipusec2/utils/size_config.dart';
 
 class AboutPage extends StatelessWidget {
   @override
@@ -84,7 +83,9 @@ class AboutPage extends StatelessWidget {
                                         child: Text(
                                             'Mizoram Public Service Commission',
                                             style: TextStyle(
-                                                fontSize: 14,
+                                                fontSize:
+                                                    SizeConfig.textMultiplier *
+                                                        2.36,
                                                 fontWeight: FontWeight.w600)),
                                       ),
                                     ),
@@ -186,7 +187,8 @@ class AboutPage extends StatelessWidget {
                                       top: 15, left: 5, child: Text('From')),
                                   Text('Jekonia Skill Development Association',
                                       style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize:
+                                              SizeConfig.textMultiplier * 2.36,
                                           fontWeight: FontWeight.w600)),
                                 ],
                               )),

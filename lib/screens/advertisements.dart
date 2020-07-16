@@ -5,59 +5,39 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:kf_drawer/kf_drawer.dart';
 import 'package:http/http.dart' as http;
+import 'package:mipusec2/model_classes/advertisement.dart';
 import 'package:mipusec2/screens/pdf.dart';
+import 'package:mipusec2/utils/size_config.dart';
 import 'package:path_provider/path_provider.dart';
 
-String url =
-    "http://mpsc.jesdamizoram.com/HeroApi/v1/Api.php?apicall=getmenuadvertisement";
-String url2 =
-    "http://mpsc.jesdamizoram.com/HeroApi/v1/Api.php?apicall=getmenuadvertisementsub&id=";
-int i = 0;
-
-bool downloading = false;
-String progressString = "";
-String directory;
-List file = new List();
-String fileName = "";
-String rootUrl = "http://mpsc.jesdamizoram.com/";
-String preConcat =
-    "/storage/emulated/0/Android/data/com.example.mipusec2/files/Advertisements/";
-
-List<AdvertisementModel> myAds = [];
-List<AdvertisementSubModel> mySubAds1 = [];
-List<AdvertisementSubModel> mySubAds2 = [];
-List<AdvertisementSubModel> filteredAdsList1 = [];
-List<AdvertisementSubModel> filteredAdsList2 = [];
-
-class AdvertisementModel {
-  int menuAdvertisementId;
-  String name;
-  String subMenu;
-  int publish;
-  String link;
-  AdvertisementModel(this.menuAdvertisementId, this.name, this.subMenu,
-      this.publish, this.link);
-}
-
-class AdvertisementSubModel {
-  int id;
-  int menuAdvertisementId;
-  String name;
-  int publish;
-  String link;
-  bool downloaded;
-  String localLink;
-  AdvertisementSubModel(this.id, this.menuAdvertisementId, this.name,
-      this.publish, this.link, this.downloaded,
-      [this.localLink]);
-}
-
+// ignore: must_be_immutable
 class AdvertisementPage extends KFDrawerContent {
   @override
   _AdvertisementPageState createState() => _AdvertisementPageState();
 }
 
 class _AdvertisementPageState extends State<AdvertisementPage> {
+  String url =
+      "http://mpsc.jesdamizoram.com/HeroApi/v1/Api.php?apicall=getmenuadvertisement";
+  String url2 =
+      "http://mpsc.jesdamizoram.com/HeroApi/v1/Api.php?apicall=getmenuadvertisementsub&id=";
+  int i = 0;
+
+  bool downloading = false;
+  String progressString = "";
+  String directory;
+  List file = new List();
+  String fileName = "";
+  String rootUrl = "http://mpsc.jesdamizoram.com/";
+  String preConcat =
+      "/storage/emulated/0/Android/data/com.example.mipusec2/files/Advertisements/";
+
+  List<AdvertisementModel> myAds = [];
+  List<AdvertisementSubModel> mySubAds1 = [];
+  List<AdvertisementSubModel> mySubAds2 = [];
+  List<AdvertisementSubModel> filteredAdsList1 = [];
+  List<AdvertisementSubModel> filteredAdsList2 = [];
+
   bool isSearching = false;
   bool expanded = false;
   bool isLoading = true;
@@ -375,7 +355,7 @@ class _AdvertisementPageState extends State<AdvertisementPage> {
                   new Text(title,
                       textAlign: TextAlign.justify,
                       style: TextStyle(
-                          fontSize: 13,
+                          fontSize: SizeConfig.textMultiplier * 2.19,
                           color: Colors.white,
                           fontWeight: FontWeight.w600)),
                 ],
@@ -390,8 +370,10 @@ class _AdvertisementPageState extends State<AdvertisementPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       new Text('Download: ',
-                          style:
-                              TextStyle(color: Colors.grey[300], fontSize: 10)),
+                          style: TextStyle(
+                            color: Colors.grey[300],
+                            fontSize: SizeConfig.textMultiplier * 1.69,
+                          )),
                       new Container(width: 5.0),
                       downloaded
                           ? Icon(
@@ -449,7 +431,7 @@ class _AdvertisementPageState extends State<AdvertisementPage> {
             child: Text(
               headr,
               style: TextStyle(
-                  fontSize: 20,
+                  fontSize: SizeConfig.textMultiplier * 3.37,
                   color: Colors.black,
                   decoration: TextDecoration.underline),
             ),

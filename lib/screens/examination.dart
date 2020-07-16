@@ -5,7 +5,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:kf_drawer/kf_drawer.dart';
 import 'package:http/http.dart' as http;
+import 'package:mipusec2/model_classes/examination.dart';
 import 'package:mipusec2/screens/pdf.dart';
+import 'package:mipusec2/utils/size_config.dart';
 import 'package:path_provider/path_provider.dart';
 
 String url =
@@ -27,30 +29,7 @@ List<ExamModel> mExams = [];
 List<ExamSubModel> mySubExam = [];
 List<ExamSubModel> filteredExamList = [];
 
-class ExamModel {
-  int menuExamId;
-  String name;
-  int subMenu;
-  int publish;
-  String link;
-  ExamModel(this.menuExamId, this.name, this.subMenu, this.publish, this.link);
-}
-
-class ExamSubModel {
-  int id;
-  int menuExamination;
-  String title;
-  String link;
-  int subMenu;
-  int publish;
-  bool downloaded;
-  String localLink;
-
-  ExamSubModel(this.id, this.menuExamination, this.title, this.link,
-      this.subMenu, this.publish, this.downloaded,
-      [this.localLink]);
-}
-
+// ignore: must_be_immutable
 class ExaminationPage extends KFDrawerContent {
   @override
   _ExaminationPageState createState() => _ExaminationPageState();
@@ -347,7 +326,7 @@ class _ExaminationPageState extends State<ExaminationPage> {
                   new Text(title,
                       textAlign: TextAlign.justify,
                       style: TextStyle(
-                          fontSize: 13,
+                          fontSize: SizeConfig.textMultiplier * 2.19,
                           color: Colors.white,
                           fontWeight: FontWeight.w600)),
                 ],
@@ -362,12 +341,15 @@ class _ExaminationPageState extends State<ExaminationPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       new Text('Download: ',
-                          style:
-                              TextStyle(color: Colors.grey[300], fontSize: 10)),
+                          style: TextStyle(
+                            color: Colors.grey[300],
+                            fontSize: SizeConfig.textMultiplier * 1.69,
+                          )),
                       new Container(width: 5.0),
                       downloaded
                           ? Icon(
                               Icons.check,
+                              color: Colors.green,
                               size: 12,
                             )
                           : downloadingIcon(link, title)
@@ -421,7 +403,7 @@ class _ExaminationPageState extends State<ExaminationPage> {
             child: Text(
               headr,
               style: TextStyle(
-                  fontSize: 20,
+                  fontSize: SizeConfig.textMultiplier * 3.37,
                   color: Colors.black,
                   decoration: TextDecoration.underline),
             ),

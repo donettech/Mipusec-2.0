@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mipusec2/model_classes/pinned_notice_model.dart';
+import 'package:mipusec2/utils/size_config.dart';
 
 class PinnedPage extends StatefulWidget {
   final PinnedNotice _notice;
@@ -31,7 +32,7 @@ class _PinnedPageState extends State<PinnedPage> {
             children: <Widget>[
               Text(
                 _pinnedNotice.title ?? "",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
+                style: TextStyle(fontSize: SizeConfig.textMultiplier*3.71, fontWeight: FontWeight.w700),
               ),
               Container(
                 margin: EdgeInsets.only(left: 3, right: 3),
@@ -41,7 +42,7 @@ class _PinnedPageState extends State<PinnedPage> {
               ),
               Text(
                 _pinnedNotice.contents ?? "",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                style: TextStyle(fontSize: SizeConfig.textMultiplier*3.04, fontWeight: FontWeight.w400),
               ),
             ],
           ),
