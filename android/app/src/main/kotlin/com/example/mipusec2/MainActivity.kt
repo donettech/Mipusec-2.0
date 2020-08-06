@@ -1,4 +1,4 @@
-package com.example.mipusec2
+package com.jesda.mpsc.mpsc
 
 import io.flutter.embedding.android.FlutterActivity
 

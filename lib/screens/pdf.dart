@@ -1,7 +1,11 @@
 import 'dart:io';
+import 'dart:typed_data';
+import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_plugin_pdf_viewer/flutter_plugin_pdf_viewer.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pdf_viewer_plugin/pdf_viewer_plugin.dart';
+import 'package:flutter/cupertino.dart';
 
 String preLink = "http://mpsc.jesdamizoram.com/";
 
@@ -14,53 +18,77 @@ class PDFPage extends StatefulWidget {
 }
 
 class _PDFPageState extends State<PDFPage> {
-  bool _isLoading = true;
-  PDFDocument document;
+  String path;
+  String passedLink;
 
   @override
-  void initState() {
+  initState() {
     super.initState();
-    loadDocument();
+    if (widget.link != null) {
+      passedLink = preLink + widget.link;
+    }
+    loadPdf();
   }
 
-  loadDocument() async {
-    try {
-      if (widget.downloaded) {
-        File file = File(widget.link);
-        document = await PDFDocument.fromFile(file);
-        print('Opening PDF from file');
-      } else {
-        document = await PDFDocument.fromURL(preLink + widget.link);
-        print('Opening PDF from net');
-      }
-    } catch (e) {
-      print('Error opening pdf: $e');
-    }
-    if (mounted) {
-      setState(() => _isLoading = false);
-    }
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+
+    return directory.path;
+  }
+
+  Future<File> get _localFile async {
+    final path = await _localPath;
+    return File('$path/temp.pdf');
+  }
+
+  Future<File> writeCounter(Uint8List stream) async {
+    final file = await _localFile;
+
+    // Write the file
+    return file.writeAsBytes(stream);
+  }
+
+  Future<Uint8List> fetchPost() async {
+    final response = await http.get(passedLink);
+    final responseJson = response.bodyBytes;
+
+    return responseJson;
+  }
+
+  loadPdf() async {
+    writeCounter(await fetchPost());
+    path = (await _localFile).path;
+
+    if (!mounted) return;
+
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xFF333366),
-      ),
-      body: Container(
-        child: Stack(
-          children: <Widget>[
-            Center(
-                child: _isLoading
-                    ? Center(child: CircularProgressIndicator())
-                    : PDFViewer(
-                        document: document,
-                        showPicker: false,
-                        showNavigation: false,
-                      )),
-          ],
-        ),
-      ),
+    return MaterialApp(
+      home: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Color(0xFF333366),
+            leading: IconButton(
+                icon: Icon(CupertinoIcons.back),
+                onPressed: () {
+                  Navigator.pop(context);
+                }),
+          ),
+          body: Container(
+            child: path != null
+                ? Container(
+                    child: PdfViewer(
+                      filePath: path,
+                    ),
+                  )
+                : Container(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+          )),
     );
   }
 }

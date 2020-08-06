@@ -42,6 +42,7 @@ class _HomePageState extends State<HomePage> {
     var response = await http.get(
         "http://mpsc.jesdamizoram.com/HeroApi/v1/Api.php?apicall=getnotification");
     String _body = response.body.toString();
+    mData.clear();
     var mdata = json.decode(_body);
     var notifications = mdata['notification'];
     for (var u in notifications) {
@@ -152,8 +153,16 @@ class _HomePageState extends State<HomePage> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 Container(
-                                  width: 2,
-                                  color: Color(0xFFde69b8),
+                                  width: 3,
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Color.fromRGBO(252, 205, 174, 1.0),
+                                      Color.fromRGBO(252, 100, 161, 1.0)
+                                    ],
+                                  )),
                                   height: double.infinity,
                                 ),
                                 Expanded(
@@ -179,10 +188,11 @@ class _HomePageState extends State<HomePage> {
                                             child: Text(
                                               pinnedItem,
                                               style: TextStyle(
+                                                fontStyle: FontStyle.italic,				  							
                                                 color: Colors.white,
                                                 fontSize:
                                                     SizeConfig.textMultiplier *
-                                                        2.53,
+                                                        2.1,
                                               ),
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
@@ -256,8 +266,9 @@ class _HomePageState extends State<HomePage> {
                                       }
                                     },
                                     child: Container(
-                                      height: 40,
+                                      // height: 40,
                                       child: Column(
+                                        mainAxisSize: MainAxisSize.min,
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         crossAxisAlignment:
@@ -280,15 +291,15 @@ class _HomePageState extends State<HomePage> {
                                                           left: 5),
                                                   child: Text(
                                                     mData[index].title,
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
+                                                    // maxLines: 1,
+                                                    /*  overflow:
+                                                        TextOverflow.ellipsis, */
                                                     softWrap: true,
                                                     style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: SizeConfig
                                                               .textMultiplier *
-                                                          2.53,
+                                                          2.1,
                                                     ),
                                                   ),
                                                 ),
@@ -349,53 +360,51 @@ class _HomePageState extends State<HomePage> {
                     text: 'M',
                     style: TextStyle(
                         fontFamily: 'Segoe',
-                        fontSize: SizeConfig.textMultiplier * 3.37,
+                        fontSize: SizeConfig.textMultiplier * 3.2,
                         color: Colors.white)),
                 new TextSpan(
                     text: 'izoram ',
-                    style: GoogleFonts.ebGaramond(
-                        textStyle: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 3.37,
-                            color: Colors.white))),
+                    style: TextStyle(
+                        fontFamily: 'Calibri',
+                        fontSize: SizeConfig.textMultiplier * 2.4,
+                        color: Colors.white)),
                 new TextSpan(
                     text: 'P',
                     style: TextStyle(
                         fontFamily: 'Segoe',
-                        fontSize: SizeConfig.textMultiplier * 3.37,
+                        fontSize: SizeConfig.textMultiplier * 3.2,
                         color: Colors.white)),
                 new TextSpan(
                     text: 'ublic ',
-                    style: GoogleFonts.ebGaramond(
-                        textStyle: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 3.37,
-                            color: Colors.white))),
+                    style: TextStyle(
+                        fontFamily: 'Calibri',
+                        fontSize: SizeConfig.textMultiplier * 2.4,
+                        color: Colors.white)),
                 new TextSpan(
                     text: 'S',
                     style: TextStyle(
                       color: Colors.white,
                       fontFamily: 'Segoe',
-                      fontSize: SizeConfig.textMultiplier * 3.37,
+                      fontSize: SizeConfig.textMultiplier * 3.2,
                     )),
                 new TextSpan(
                     text: 'ervice ',
-                    style: GoogleFonts.ebGaramond(
-                        textStyle: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 3.37,
-                            color: Colors.white))),
+                    style: TextStyle(
+                        fontFamily: 'Calibri',
+                        fontSize: SizeConfig.textMultiplier * 2.4,
+                        color: Colors.white)),
                 new TextSpan(
                     text: 'C',
                     style: TextStyle(
                         fontFamily: 'Segoe',
-                        fontSize: SizeConfig.textMultiplier * 3.37,
+                        fontSize: SizeConfig.textMultiplier * 3.2,
                         color: Colors.white)),
                 new TextSpan(
-                  text: 'ommission ',
-                  style: GoogleFonts.ebGaramond(
-                    textStyle: TextStyle(
-                        fontSize: SizeConfig.textMultiplier * 3.37,
-                        color: Colors.white),
-                  ),
-                ),
+                    text: 'ommission ',
+                    style: TextStyle(
+                        fontFamily: 'Calibri',
+                        fontSize: SizeConfig.textMultiplier * 2.4,
+                        color: Colors.white)),
               ],
             ),
           )),

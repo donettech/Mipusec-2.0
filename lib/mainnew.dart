@@ -10,11 +10,9 @@ import 'package:mipusec2/screens/notice.dart';
 import 'package:mipusec2/screens/results.dart';
 import 'package:mipusec2/screens/syllabus.dart';
 import 'package:mipusec2/utils/class_builder.dart';
-import 'package:mipusec2/utils/locator.dart';
 import 'package:mipusec2/utils/size_config.dart';
 
 void main() {
-  setupLocator();
   ClassBuilder.registerClasses();
   runApp(MyApp());
 }
@@ -117,7 +115,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
             'About',
             style: TextStyle(fontFamily: 'Segoeui', color: Colors.white),
           ),
-		  icon: Icon(Icons.info, color: Color(0xFFFFBC9C)),											   
+          icon: Icon(Icons.info, color: Color(0xFFFFBC9C)),
           onPressed: () {
             Navigator.push(context,
                 new MaterialPageRoute(builder: (context) => new AboutPage()));
@@ -129,7 +127,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                 end: Alignment.bottomRight,
                 colors: [
                   Color.fromRGBO(83, 94, 127, 1.0),
-								   
                   Color.fromRGBO(83, 94, 127, 1.0)
                 ],
                 tileMode: TileMode.repeated)),

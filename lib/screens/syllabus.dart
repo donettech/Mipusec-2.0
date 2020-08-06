@@ -24,7 +24,7 @@ class _SyllabusPageState extends State<SyllabusPage> {
   String fileName = "";
   String rootUrl = "http://mpsc.jesdamizoram.com/";
   String preConcat =
-      "/storage/emulated/0/Android/data/com.example.mipusec2/files/Syllabus/";
+      "/storage/emulated/0/Android/data/com.jesda.mpsc.mpsc/files/Syllabus/";
 
   String url =
       "http://mpsc.jesdamizoram.com/HeroApi/v1/Api.php?apicall=getmenusyllabus";
@@ -136,9 +136,9 @@ class _SyllabusPageState extends State<SyllabusPage> {
   Widget build(BuildContext context) {
     return isLoading
         ? Scaffold(
-            backgroundColor: Colors.blue[500],
+            backgroundColor: Color(0xff3D496A),
             appBar: AppBar(
-              backgroundColor: Color(0xFF333366),
+              backgroundColor: Color.fromRGBO(83, 94, 127, 1.0),
               elevation: 0,
               leading: !isSearching
                   ? IconButton(
@@ -185,7 +185,7 @@ class _SyllabusPageState extends State<SyllabusPage> {
               ],
             ),
             body: Container(
-              color: Color(0xFF7A9BEE),
+              color: Color(0xff3D496A),
               child: Center(
                 child: CircularProgressIndicator(
                   backgroundColor: Colors.white,
@@ -194,16 +194,16 @@ class _SyllabusPageState extends State<SyllabusPage> {
             ),
           )
         : Container(
-            color: Color(0xFF333366),
+            color: Color(0xff3D496A),
             child: Container(
               decoration: BoxDecoration(
                   borderRadius: new BorderRadius.only(
                       topLeft: Radius.elliptical(200, 125)),
-                  color: Colors.blue[500]),
+                  color: Color(0xff3D496A)),
               child: CustomScrollView(
                 slivers: <Widget>[
                   SliverAppBar(
-                    backgroundColor: Color(0xFF333366),
+                    backgroundColor: Color.fromRGBO(83, 94, 127, 1.0),
                     elevation: 0,
                     floating: true,
                     leading: !isSearching
@@ -219,7 +219,8 @@ class _SyllabusPageState extends State<SyllabusPage> {
                             onChanged: (value) {
                               _filterSyllabus(value);
                             },
-                            style: TextStyle(color: Colors.white),
+							style: TextStyle(
+                                fontFamily: 'Segoeui', color: Colors.white),
                             decoration: InputDecoration(
                                 icon: Icon(
                                   Icons.search,
@@ -308,6 +309,7 @@ class _SyllabusPageState extends State<SyllabusPage> {
                   new Text(title,
                       textAlign: TextAlign.justify,
                       style: TextStyle(
+						  fontFamily: 'Segoeui',					
                           fontSize: SizeConfig.textMultiplier * 2.19,
                           color: Colors.white,
                           fontWeight: FontWeight.w600)),
@@ -324,7 +326,7 @@ class _SyllabusPageState extends State<SyllabusPage> {
                     children: <Widget>[
                       new Text('Download: ',
                           style: TextStyle(
-                            color: Colors.grey[300],
+                            color: Colors.amber[200],
                             fontSize: SizeConfig.textMultiplier * 1.69,
                           )),
                       new Container(width: 5.0),
@@ -370,10 +372,17 @@ class _SyllabusPageState extends State<SyllabusPage> {
     }
     return Container(
       child: cardContent(contxt, title, link, isLocal),
-      height: 100.0,
+      height: 80.0,
       margin: new EdgeInsets.fromLTRB(15, 5, 15, 0),
       decoration: new BoxDecoration(
-        color: new Color(0xFF333366),
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color.fromRGBO(102, 114, 150, 1.0),
+            Color.fromRGBO(70, 80, 110, 1.0)
+          ],
+        ),  
         shape: BoxShape.rectangle,
         borderRadius: new BorderRadius.circular(8.0),
         boxShadow: <BoxShadow>[

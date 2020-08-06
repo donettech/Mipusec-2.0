@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "826928654111",
+    "firebase_url": "https://mipusec2.firebaseio.com",
+    "project_id": "mipusec2",
+    "storage_bucket": "mipusec2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:826928654111:android:d19004a65394a4d857f22a",
+        "android_client_info": {
+          "package_name": "com.example.mipusec2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "826928654111-e4c7msea3cdeidh8imkk3t354r31dqdo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpYfXew1KL2Tt-6Sl3lCiz3VfUatVY4QA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "826928654111-e4c7msea3cdeidh8imkk3t354r31dqdo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

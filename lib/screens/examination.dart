@@ -1,14 +1,11 @@
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:kf_drawer/kf_drawer.dart';
-import 'package:http/http.dart' as http;
 import 'package:mipusec2/model_classes/examination.dart';
 import 'package:mipusec2/screens/pdf.dart';
+import 'package:mipusec2/services/api.dart';
+import 'package:mipusec2/services/file_service.dart';
+import 'package:mipusec2/utils/locator.dart';
 import 'package:mipusec2/utils/size_config.dart';
-import 'package:path_provider/path_provider.dart';
 
 String url =
     "http://mpsc.jesdamizoram.com/HeroApi/v1/Api.php?apicall=getmenuexamination";
@@ -40,7 +37,10 @@ class _ExaminationPageState extends State<ExaminationPage> {
   bool expanded = false;
   bool isLoading = true;
 
-  getExams() async {
+  var _api = locator<Api>();
+  var _fileService = locator<FileService>();
+
+  /* getExams() async {
     List<ExamModel> mAds = [];
     var response = await http.get(url);
     var mdata = json.decode(response.body);
@@ -64,7 +64,7 @@ class _ExaminationPageState extends State<ExaminationPage> {
       mSubAds.add(menuAdsSubItem);
     }
     return mSubAds;
-  }
+  } */
 
   void _filterAds(value) {
     setState(() {
@@ -75,8 +75,25 @@ class _ExaminationPageState extends State<ExaminationPage> {
     });
   }
 
-  Future<void> callData() async {
-    mExams = await getExams();
+  Future callData() async {
+    List<ExamModel> examModel = await _api.getMenuExam();
+    mExams = examModel;
+    for (var exam in examModel) {
+      if (exam.subMenu == 1) {
+        List<ExamSubModel> tempExam;
+        tempExam = await _fileService.compare(exam.subModel);
+        exam.subModel = tempExam;
+        setState(
+          () {
+            mySubExam = filteredExamList = exam.subModel;
+            isLoading = !isLoading;
+          },
+        );
+      }
+    }
+    print(examModel);
+
+    /* mExams = await getExams();
     setState(() {});
     if (mExams.length >= 2) {
       var mExm = await getExamSub(mExams[1].menuExamId);
@@ -85,10 +102,10 @@ class _ExaminationPageState extends State<ExaminationPage> {
       });
     }
     isLoading = !isLoading;
-    _listofFiles();
+    _listofFiles(); */
   }
 
-  Future<void> downloadFile(String mUrl, String fileName) async {
+  /* Future<void> downloadFile(String mUrl, String fileName) async {
     var dio = new Dio();
     var fUrl = rootUrl + mUrl;
     var dir = await getExternalStorageDirectory();
@@ -147,7 +164,7 @@ class _ExaminationPageState extends State<ExaminationPage> {
         loop++;
       }
     }
-  }
+  } */
 
   @override
   void initState() {
@@ -160,7 +177,7 @@ class _ExaminationPageState extends State<ExaminationPage> {
     return isLoading
         ? Scaffold(
             appBar: AppBar(
-              backgroundColor: Color(0xFF333366),
+              backgroundColor: Color.fromRGBO(83, 94, 127, 1.0),
               elevation: 0,
               leading: !isSearching
                   ? IconButton(
@@ -175,7 +192,8 @@ class _ExaminationPageState extends State<ExaminationPage> {
                       onChanged: (value) {
                         _filterAds(value);
                       },
-                      style: TextStyle(color: Colors.white),
+                      style:
+                          TextStyle(fontFamily: 'Segoeui', color: Colors.white),
                       decoration: InputDecoration(
                           icon: Icon(
                             Icons.search,
@@ -207,7 +225,7 @@ class _ExaminationPageState extends State<ExaminationPage> {
               ],
             ),
             body: Container(
-              color: Color(0xFF7A9BEE),
+              color: Color(0xff3D496A),
               child: Center(
                 child: CircularProgressIndicator(
                   backgroundColor: Colors.white,
@@ -216,16 +234,16 @@ class _ExaminationPageState extends State<ExaminationPage> {
             ),
           )
         : Container(
-            color: Color(0xFF333366),
+            color: Color.fromRGBO(83, 94, 127, 1.0),
             child: Container(
               decoration: BoxDecoration(
                   borderRadius: new BorderRadius.only(
                       topLeft: Radius.elliptical(460, 150)),
-                  color: Color(0xFF7A9BEE)),
+                  color: Color(0xff3D496A)),
               child: CustomScrollView(
                 slivers: <Widget>[
                   SliverAppBar(
-                    backgroundColor: Color(0xFF333366),
+                    backgroundColor: Color.fromRGBO(83, 94, 127, 1.0),
                     elevation: 0,
                     floating: true,
                     pinned: false,
@@ -242,14 +260,17 @@ class _ExaminationPageState extends State<ExaminationPage> {
                             onChanged: (value) {
                               _filterAds(value);
                             },
-                            style: TextStyle(color: Colors.white),
                             decoration: InputDecoration(
                                 icon: Icon(
                                   Icons.search,
                                   color: Colors.white,
                                 ),
+                                enabled: true,
                                 hintText: " Search Here",
                                 hintStyle: TextStyle(color: Colors.white)),
+                            style: TextStyle(
+                              fontFamily: 'Segoeui',
+                            ),
                           ),
                     centerTitle: true,
                     actions: <Widget>[
@@ -273,10 +294,30 @@ class _ExaminationPageState extends State<ExaminationPage> {
                             )
                     ],
                   ),
-                  SliverList(
-                      delegate: SliverChildListDelegate([
-                    myItems(context, mExams, filteredExamList, mExams[1].name),
-                  ]))
+                  if (mExams.length == 3 && mExams[0].subMenu == 0)
+                    SliverToBoxAdapter(
+                      child: singleItem(mExams[0].name, mExams[0].link, false),
+                    ),
+                  if (mExams.length == 3 && mExams[1].subMenu == 0)
+                    SliverToBoxAdapter(
+                      child: singleItem(mExams[1].name, mExams[1].link, false),
+                    ),
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 5,
+                    ),
+                  ),
+                  if (mExams.length == 3 && mExams[2].subMenu == 1)
+                    SliverToBoxAdapter(
+                      child: interviewList(mExams[2]),
+                    ),
+                  /*  SliverList(
+                    delegate: SliverChildListDelegate(
+                      [
+                        myItems(mExams, filteredExamList, mExams[2].name),
+                      ],
+                    ),
+                  ), */
                 ],
               ),
             ),
@@ -296,21 +337,43 @@ class _ExaminationPageState extends State<ExaminationPage> {
           onTap: () {
             if (title
                 .toUpperCase()
+                .contains('ADMIT CARD NOTIFICATION / HRIATTIRNA')) {
+              Scaffold.of(context).showSnackBar(SnackBar(
+                content: Text("Download not available for this file"),
+              ));
+            } else if (title
+                .toUpperCase()
                 .contains('TENTATIVE SCHEDULE OF EXAMINATION')) {
               Scaffold.of(context).showSnackBar(SnackBar(
                 content: Text("Download not available for this file"),
               ));
             } else {
-              downloading = true;
-              downloadFile(link, title);
+              setState(() {
+                downloading = true;
+              });
+              // downloadFile(link, title);
+              _fileService.downloadFile(link, title).then(
+                (value) async {
+                  if (value != null) {
+                    List<ExamSubModel> _newSubExam =
+                        await _fileService.compare(filteredExamList);
+                    if (mounted) {
+                      setState(() {
+                        downloading = false;
+                        progressString = "Completed";
+                        mySubExam = filteredExamList = _newSubExam;
+                      });
+                    }
+                  }
+                },
+              );
             }
           },
           child: new Image.asset("assets/ic_download.png", height: 12.0));
     }
   }
 
-  Widget cardContent(
-      BuildContext contx, String title, String link, bool downloaded) {
+  Widget cardContent(String title, String link, bool downloaded) {
     return Container(
       margin: new EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
       constraints: new BoxConstraints.expand(),
@@ -326,17 +389,18 @@ class _ExaminationPageState extends State<ExaminationPage> {
                   new Text(title,
                       textAlign: TextAlign.justify,
                       style: TextStyle(
+                          fontFamily: 'Segoeui',
                           fontSize: SizeConfig.textMultiplier * 2.19,
                           color: Colors.white,
                           fontWeight: FontWeight.w600)),
                 ],
               )),
           Expanded(
-              flex: 1,
-              child: new Row(
-                children: <Widget>[
-                  Expanded(
-                      child: Row(
+            flex: 1,
+            child: new Row(
+              children: <Widget>[
+                Expanded(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
@@ -354,58 +418,67 @@ class _ExaminationPageState extends State<ExaminationPage> {
                             )
                           : downloadingIcon(link, title)
                     ],
-                  )),
-                ],
-              )),
-        ],
-      ),
-    );
-  }
-
-  Widget singleItem(
-      BuildContext contxt, String title, String link, bool downloaded) {
-    bool isLocal = downloaded;
-    return Container(
-      child: cardContent(contxt, title, link, isLocal),
-      height: 100.0,
-      margin: new EdgeInsets.fromLTRB(15, 15, 15, 0),
-      decoration: new BoxDecoration(
-        color: new Color(0xFF333366),
-        shape: BoxShape.rectangle,
-        borderRadius: new BorderRadius.circular(8.0),
-        boxShadow: <BoxShadow>[
-          new BoxShadow(
-            color: Colors.black12,
-            blurRadius: 10.0,
-            offset: new Offset(0.0, 10.0),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget myItems(BuildContext ctx, List<ExamModel> exam,
-      List<ExamSubModel> iSubExams, String headr) {
+  Widget singleItem(String title, String link, bool downloaded) {
+    bool isLocal = downloaded;
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            new MaterialPageRoute(
+                builder: (context) => new PDFPage(link, false)));
+      },
+      child: Container(
+        child: cardContent(title, link, isLocal),
+        height: 100.0,
+        margin: new EdgeInsets.fromLTRB(15, 15, 15, 0),
+        decoration: new BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color.fromRGBO(102, 114, 150, 1.0),
+              Color.fromRGBO(74, 85, 116, 1.0)
+            ],
+          ),
+          shape: BoxShape.rectangle,
+          borderRadius: new BorderRadius.circular(8.0),
+          boxShadow: <BoxShadow>[
+            new BoxShadow(
+              color: Colors.black12,
+              blurRadius: 10.0,
+              offset: new Offset(0.0, 10.0),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget myItems(
+      List<ExamModel> exam, List<ExamSubModel> iSubExams, String headr) {
     return Column(
       children: <Widget>[
-        GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  new MaterialPageRoute(
-                      builder: (context) => new PDFPage(exam[0].link, false)));
-            },
-            child: singleItem(ctx, exam[0].name, exam[0].link, false)),
         Padding(
-          padding: EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
+          padding: EdgeInsets.only(top: 10.0, left: 16.0, right: 16.0),
           child: Align(
             alignment: Alignment.center,
             child: Text(
               headr,
               style: TextStyle(
+                  fontFamily: 'Segoeui',
                   fontSize: SizeConfig.textMultiplier * 3.37,
-                  color: Colors.black,
-                  decoration: TextDecoration.underline),
+                  color: Colors.amberAccent,
+                  decoration: TextDecoration.none),
             ),
           ),
         ),
@@ -431,8 +504,62 @@ class _ExaminationPageState extends State<ExaminationPage> {
                                   new PDFPage(iSubExams[indx].link, false)));
                     }
                   },
-                  child: singleItem(ctx, iSubExams[indx].title,
-                      iSubExams[indx].link, iSubExams[indx].downloaded)
+                  child: singleItem(iSubExams[indx].title, iSubExams[indx].link,
+                      iSubExams[indx].downloaded ?? false)
+                  /* ListTile(
+                title: Text(iSubExams[indx].title),
+                subtitle: Divider(color: Colors.grey[400]),
+              ), */
+                  );
+            })
+      ],
+    );
+  }
+
+  Widget interviewList(
+    ExamModel examModel,
+  ) {
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
+          child: Align(
+            alignment: Alignment.center,
+            child: Text(
+              examModel.name.toUpperCase(),
+              style: TextStyle(
+                  fontSize: SizeConfig.textMultiplier * 3.37,
+                  color: Colors.black,
+                  decoration: TextDecoration.underline),
+            ),
+          ),
+        ),
+        ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: examModel.subModel.length,
+            shrinkWrap: true,
+            itemBuilder: (BuildContext context, int indx) {
+              return GestureDetector(
+                  onTap: () {
+                    if (examModel.subModel[indx].downloaded) {
+                      Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (context) => new PDFPage(
+                                  examModel.subModel[indx].localLink,
+                                  examModel.subModel[indx].downloaded)));
+                    } else {
+                      Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (context) => new PDFPage(
+                                  examModel.subModel[indx].link, false)));
+                    }
+                  },
+                  child: singleItem(
+                      examModel.subModel[indx].title,
+                      examModel.subModel[indx].link,
+                      examModel.subModel[indx].downloaded ?? false)
                   /* ListTile(
                 title: Text(iSubExams[indx].title),
                 subtitle: Divider(color: Colors.grey[400]),

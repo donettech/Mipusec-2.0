@@ -1,11 +1,26 @@
-
 class ExamModel {
   int menuExamId;
   String name;
   int subMenu;
   int publish;
   String link;
-  ExamModel(this.menuExamId, this.name, this.subMenu, this.publish, this.link);
+  List<ExamSubModel> subModel;
+  ExamModel({
+    this.menuExamId,
+    this.name,
+    this.subMenu,
+    this.publish,
+    this.link,
+    this.subModel,
+  });
+
+  ExamModel.fromJson(Map<String, dynamic> json) {
+    menuExamId = json['id'];
+    name = json['name'];
+    subMenu = json['submenu'];
+    publish = json['publish'];
+    link = json['link'];
+  }
 }
 
 class ExamSubModel {
@@ -21,4 +36,14 @@ class ExamSubModel {
   ExamSubModel(this.id, this.menuExamination, this.title, this.link,
       this.subMenu, this.publish, this.downloaded,
       [this.localLink]);
+
+  ExamSubModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    menuExamination = json['menu_examination'];
+    title = json['title'];
+    link = json['link'];
+    subMenu = json['submenu'];
+    publish = json['publish'];
+    downloaded = false;
+  }
 }

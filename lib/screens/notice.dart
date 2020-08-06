@@ -30,7 +30,7 @@ class _NoticePageState extends State<NoticePage> {
   String fileName = "";
   String rootUrl = "http://mpsc.jesdamizoram.com/";
   String preConcat =
-      "/storage/emulated/0/Android/data/com.example.mipusec2/files/Notifications/";
+      "/storage/emulated/0/Android/data/com.jesda.mpsc.mpsc/files/Notifications/";
 
   List<NotificationModel> myNotice = [];
   List<NotificationModel> filteredNoticeList = [];
@@ -61,6 +61,8 @@ class _NoticePageState extends State<NoticePage> {
   }
 
   Future<void> callData() async {
+    myNotice.clear();
+    filteredNoticeList.clear();
     var oNotice = await getResult();
     setState(() {
       myNotice = filteredNoticeList = oNotice;
@@ -76,8 +78,6 @@ class _NoticePageState extends State<NoticePage> {
     var knockDir = new Directory('${dir.path}/Notifications/');
     await dio.download(fUrl, '${knockDir.path}/$fileName.${'pdf'}',
         onReceiveProgress: (rec, total) {
-      print("Received: $rec , Total Size : $total");
-
       if (mounted) {
         setState(() {
           downloading = true;
@@ -100,8 +100,7 @@ class _NoticePageState extends State<NoticePage> {
     final Directory mDirectory = Directory('$directory/$folderName/');
     if (await mDirectory.exists()) {
       setState(() {
-        file = Directory("$directory/Notifications/")
-            .listSync(); //use your folder name instead of resume.
+        file = Directory("$directory/Notifications/").listSync();
         compare();
       });
     } else {
@@ -140,9 +139,9 @@ class _NoticePageState extends State<NoticePage> {
   Widget build(BuildContext context) {
     return isLoading
         ? Scaffold(
-            backgroundColor: Colors.blue[500],
+            backgroundColor: Color(0xff3D496A),
             appBar: AppBar(
-              backgroundColor: Color(0xFF333366),
+              backgroundColor: Color.fromRGBO(83, 94, 127, 1.0),
               elevation: 0,
               leading: !isSearching
                   ? IconButton(
@@ -152,7 +151,7 @@ class _NoticePageState extends State<NoticePage> {
                   : null,
               titleSpacing: 0.0,
               title: !isSearching
-                  ? Text('Results')
+                  ? Text('Notice Board')
                   : TextField(
                       onChanged: (value) {
                         _filterResults(value);
@@ -189,7 +188,7 @@ class _NoticePageState extends State<NoticePage> {
               ],
             ),
             body: Container(
-              color: Color(0xFF7A9BEE),
+              color: Color(0xff3D496A),
               child: Center(
                   child: CircularProgressIndicator(
                 backgroundColor: Colors.white,
@@ -197,16 +196,16 @@ class _NoticePageState extends State<NoticePage> {
             ),
           )
         : Container(
-            color: Color(0xFF333366),
+            color: Color.fromRGBO(83, 94, 127, 1.0),
             child: Container(
               decoration: BoxDecoration(
                   borderRadius: new BorderRadius.only(
                       topLeft: Radius.elliptical(360, 115)),
-                  color: Color(0xFF7A9BEE)),
+                  color: Color(0xff3D496A)),
               child: CustomScrollView(
                 slivers: <Widget>[
                   SliverAppBar(
-                    backgroundColor: Color(0xFF333366),
+                    backgroundColor: Color.fromRGBO(83, 94, 127, 1.0),
                     elevation: 0,
                     floating: true,
                     leading: !isSearching
@@ -217,12 +216,13 @@ class _NoticePageState extends State<NoticePage> {
                         : null,
                     titleSpacing: 0.0,
                     title: !isSearching
-                        ? Text('Results')
+                        ? Text('Notice Board')
                         : TextField(
                             onChanged: (value) {
                               _filterResults(value);
                             },
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(
+                                fontFamily: 'Segoeui', color: Colors.white),
                             decoration: InputDecoration(
                                 icon: Icon(
                                   Icons.search,
@@ -300,6 +300,7 @@ class _NoticePageState extends State<NoticePage> {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
+                          fontFamily: 'Segoeui',
                           fontSize: SizeConfig.textMultiplier * 2.19,
                           color: Colors.white,
                           fontWeight: FontWeight.w600)),
@@ -316,7 +317,7 @@ class _NoticePageState extends State<NoticePage> {
                     children: <Widget>[
                       new Text('Download: ',
                           style: TextStyle(
-                            color: Colors.grey[300],
+                            color: Colors.amberAccent,
                             fontSize: SizeConfig.textMultiplier * 1.69,
                           )),
                       new Container(width: 5.0),
@@ -343,7 +344,14 @@ class _NoticePageState extends State<NoticePage> {
       height: 100.0,
       margin: new EdgeInsets.fromLTRB(15, 5, 15, 0),
       decoration: new BoxDecoration(
-        color: new Color(0xFF333366),
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color.fromRGBO(102, 114, 150, 1.0),
+            Color.fromRGBO(74, 85, 116, 1.0)
+          ],
+        ),
         shape: BoxShape.rectangle,
         borderRadius: new BorderRadius.circular(8.0),
         boxShadow: <BoxShadow>[
