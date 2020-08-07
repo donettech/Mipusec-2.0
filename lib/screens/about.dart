@@ -30,19 +30,7 @@ class AboutPage extends StatelessWidget {
                                     clipper: BottomWaveClipper(),
                                     child: Container(
                                       color: Color(0xff3D496A),
-                                      /* decoration: BoxDecoration(
-                                          gradient: LinearGradient(
-                                              begin: Alignment.topLeft,
-                                              end: Alignment.bottomCenter,
-                                              stops: [
-                                            0.1,
-                                            0.9
-                                          ],
-                                              colors: [
-                                            Color(0xff3D496A),
-                                            Colors.white,
-                                          ])
-                                          ), */
+                                      
                                     ),
                                   ),
                                   Positioned(
@@ -160,15 +148,7 @@ class AboutPage extends StatelessWidget {
                                             elevation: 5,
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(45)),
-                                            /* decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                image: DecorationImage(
-                                                    image: AssetImage(
-                                                  'assets/jesda.png',
-                                                )),
-                                                border: Border.all(
-                                                    color: Colors.blue, width: 5)), */
+                                                    BorderRadius.circular(45)), 
                                             child: Image.asset(
                                               'assets/jesda.png',
                                               width: MediaQuery.of(context)

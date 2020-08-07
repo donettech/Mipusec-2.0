@@ -267,9 +267,7 @@ class _SyllabusPageState extends State<SyllabusPage> {
                                           filteredSyllabusList[indx].localLink,
                                           filteredSyllabusList[indx]
                                               .downloaded)));
-                            } else {
-                              /* downloadFile(filteredSyllabusList[indx].link,
-                                filteredSyllabusList[indx].name); */
+                            } else { 
                               Navigator.push(
                                   context,
                                   new MaterialPageRoute(

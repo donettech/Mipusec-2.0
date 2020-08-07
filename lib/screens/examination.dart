@@ -40,32 +40,6 @@ class _ExaminationPageState extends State<ExaminationPage> {
   var _api = locator<Api>();
   var _fileService = locator<FileService>();
 
-  /* getExams() async {
-    List<ExamModel> mAds = [];
-    var response = await http.get(url);
-    var mdata = json.decode(response.body);
-    var menuAds = mdata['menuexamination'];
-    for (var u in menuAds) {
-      ExamModel menuAdsItem =
-          ExamModel(u['id'], u['name'], u['submenu'], u['publish'], u['link']);
-      mAds.add(menuAdsItem);
-    }
-    return mAds;
-  }
-
-  getExamSub(int indx) async {
-    List<ExamSubModel> mSubAds = [];
-    var response = await http.get(url2 + indx.toString());
-    var mdata = json.decode(response.body);
-    var menuAdssub = mdata['menuexaminationsub'];
-    for (var u in menuAdssub) {
-      ExamSubModel menuAdsSubItem = ExamSubModel(u['id'], u['menu_examination'],
-          u['title'], u['link'], u['submenu'], u['publish'], false);
-      mSubAds.add(menuAdsSubItem);
-    }
-    return mSubAds;
-  } */
-
   void _filterAds(value) {
     setState(() {
       filteredExamList = mySubExam
@@ -91,80 +65,7 @@ class _ExaminationPageState extends State<ExaminationPage> {
         );
       }
     }
-    print(examModel);
-
-    /* mExams = await getExams();
-    setState(() {});
-    if (mExams.length >= 2) {
-      var mExm = await getExamSub(mExams[1].menuExamId);
-      setState(() {
-        mySubExam = filteredExamList = mExm;
-      });
-    }
-    isLoading = !isLoading;
-    _listofFiles(); */
   }
-
-  /* Future<void> downloadFile(String mUrl, String fileName) async {
-    var dio = new Dio();
-    var fUrl = rootUrl + mUrl;
-    var dir = await getExternalStorageDirectory();
-    var knockDir = new Directory('${dir.path}/Examination/');
-    await dio.download(fUrl, '${knockDir.path}/$fileName.${'pdf'}',
-        onReceiveProgress: (rec, total) {
-      print("Received: $rec , Total Size : $total");
-
-      if (mounted) {
-        setState(() {
-          downloading = true;
-          progressString = ((rec / total) * 100).toStringAsFixed(0) + "%";
-        });
-      }
-    });
-    if (mounted) {
-      setState(() {
-        downloading = false;
-        progressString = "Completed";
-        _listofFiles();
-      });
-    }
-  }
-
-  Future<void> _listofFiles() async {
-    directory = (await getExternalStorageDirectory()).path;
-    String folderName = 'Examination';
-    final Directory mDirectory = Directory('$directory/$folderName/');
-    if (await mDirectory.exists()) {
-      setState(() {
-        file = Directory("$directory/Examination/")
-            .listSync(); //use your folder name instead of resume.
-        compare();
-      });
-    } else {
-      await mDirectory.create(recursive: true);
-    }
-  }
-
-  void compare() {
-    if (0 != filteredExamList.length && 0 != file.length) {
-      int loop = 0;
-      while (loop < filteredExamList.length) {
-        int indx = 0;
-        while (indx < file.length) {
-          if (preConcat + filteredExamList[loop].title + ".pdf" ==
-              file[indx].path) {
-            setState(() {
-              filteredExamList[loop].downloaded = true;
-              filteredExamList[loop].localLink = file[indx].path;
-            });
-          }
-          indx++;
-        }
-        indx = 0;
-        loop++;
-      }
-    }
-  } */
 
   @override
   void initState() {
@@ -311,13 +212,6 @@ class _ExaminationPageState extends State<ExaminationPage> {
                     SliverToBoxAdapter(
                       child: interviewList(mExams[2]),
                     ),
-                  /*  SliverList(
-                    delegate: SliverChildListDelegate(
-                      [
-                        myItems(mExams, filteredExamList, mExams[2].name),
-                      ],
-                    ),
-                  ), */
                 ],
               ),
             ),
@@ -351,7 +245,6 @@ class _ExaminationPageState extends State<ExaminationPage> {
               setState(() {
                 downloading = true;
               });
-              // downloadFile(link, title);
               _fileService.downloadFile(link, title).then(
                 (value) async {
                   if (value != null) {
@@ -505,12 +398,7 @@ class _ExaminationPageState extends State<ExaminationPage> {
                     }
                   },
                   child: singleItem(iSubExams[indx].title, iSubExams[indx].link,
-                      iSubExams[indx].downloaded ?? false)
-                  /* ListTile(
-                title: Text(iSubExams[indx].title),
-                subtitle: Divider(color: Colors.grey[400]),
-              ), */
-                  );
+                      iSubExams[indx].downloaded ?? false));
             })
       ],
     );
@@ -559,12 +447,7 @@ class _ExaminationPageState extends State<ExaminationPage> {
                   child: singleItem(
                       examModel.subModel[indx].title,
                       examModel.subModel[indx].link,
-                      examModel.subModel[indx].downloaded ?? false)
-                  /* ListTile(
-                title: Text(iSubExams[indx].title),
-                subtitle: Divider(color: Colors.grey[400]),
-              ), */
-                  );
+                      examModel.subModel[indx].downloaded ?? false));
             })
       ],
     );

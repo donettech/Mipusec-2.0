@@ -32,7 +32,6 @@ class _PDFPageState extends State<PDFPage> {
 
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
-
     return directory.path;
   }
 
@@ -43,24 +42,19 @@ class _PDFPageState extends State<PDFPage> {
 
   Future<File> writeCounter(Uint8List stream) async {
     final file = await _localFile;
-
-    // Write the file
     return file.writeAsBytes(stream);
   }
 
   Future<Uint8List> fetchPost() async {
     final response = await http.get(passedLink);
     final responseJson = response.bodyBytes;
-
     return responseJson;
   }
 
   loadPdf() async {
     writeCounter(await fetchPost());
     path = (await _localFile).path;
-
     if (!mounted) return;
-
     setState(() {});
   }
 

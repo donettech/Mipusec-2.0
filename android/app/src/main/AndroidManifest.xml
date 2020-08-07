@@ -7,7 +7,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="mipusec2"
+        android:label="MIPUSEC"
         android:icon="@drawable/mpsc_logo">
         <activity
             android:name=".MainActivity"

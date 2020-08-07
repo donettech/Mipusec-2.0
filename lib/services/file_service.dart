@@ -18,21 +18,8 @@ class FileService {
         onReceiveProgress: (rec, total) {
       print("Received: $rec , Total Size : $total");
       return true;
-      /* if (mounted) {
-        setState(() {
-          downloading = true;
-          progressString = ((rec / total) * 100).toStringAsFixed(0) + "%";
-        });
-      } */
     });
-    // _listofFiles();
-    /* if (mounted) {
-      setState(() {
-        downloading = false;
-        progressString = "Completed";
-       
-      });
-    } */
+
     return false;
   }
 

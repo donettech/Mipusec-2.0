@@ -142,8 +142,7 @@ class _ResultsPageState extends State<ResultsPage> {
     final Directory mDirectory = Directory('$directory/$folderName/');
     if (await mDirectory.exists()) {
       setState(() {
-        file = Directory("$directory/Results/")
-            .listSync(); //use your folder name instead of resume.
+        file = Directory("$directory/Results/").listSync();
         compare();
       });
     } else {

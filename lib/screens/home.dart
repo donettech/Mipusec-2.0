@@ -86,8 +86,7 @@ class _HomePageState extends State<HomePage> {
     if (await mDirectory.exists()) {
       if (this.mounted) {
         setState(() {
-          file = Directory("$directory/Notifications/")
-              .listSync(); //use your folder name instead of resume.
+          file = Directory("$directory/Notifications/").listSync();
           compare();
         });
       }
@@ -188,7 +187,7 @@ class _HomePageState extends State<HomePage> {
                                             child: Text(
                                               pinnedItem,
                                               style: TextStyle(
-                                                fontStyle: FontStyle.italic,				  							
+                                                fontStyle: FontStyle.italic,
                                                 color: Colors.white,
                                                 fontSize:
                                                     SizeConfig.textMultiplier *
@@ -218,23 +217,14 @@ class _HomePageState extends State<HomePage> {
                       padding: EdgeInsets.only(top: 5),
                       margin: EdgeInsets.only(left: 8, right: 5, bottom: 5),
                       decoration: BoxDecoration(
-                        // color: Color(0xFF333366),
                         gradient: LinearGradient(colors: [
                           Color(0xFF535E7F),
-                          //Color(0xff535e7f)
                           Color(0xff3c466a),
                         ]),
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(20),
                             topRight: Radius.circular(20)),
                       ),
-                      /* child: mData.length == 0
-                        ? Container(
-                            child: Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          )
-                        :  */
                       child: FutureBuilder(
                           future: getData(),
                           builder: (context, snap) {
@@ -266,7 +256,6 @@ class _HomePageState extends State<HomePage> {
                                       }
                                     },
                                     child: Container(
-                                      // height: 40,
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         mainAxisAlignment:
@@ -291,9 +280,6 @@ class _HomePageState extends State<HomePage> {
                                                           left: 5),
                                                   child: Text(
                                                     mData[index].title,
-                                                    // maxLines: 1,
-                                                    /*  overflow:
-                                                        TextOverflow.ellipsis, */
                                                     softWrap: true,
                                                     style: TextStyle(
                                                       color: Colors.white,
@@ -349,8 +335,6 @@ class _HomePageState extends State<HomePage> {
           child: Center(
               child: RichText(
             text: new TextSpan(
-              // Note: Styles for TextSpans must be explicitly defined.
-              // Child text spans will inherit styles from parent
               style: new TextStyle(
                 fontSize: SizeConfig.textMultiplier * 3.37,
                 color: Colors.black,

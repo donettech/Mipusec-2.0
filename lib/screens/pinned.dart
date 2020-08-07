@@ -23,10 +23,10 @@ class _PinnedPageState extends State<PinnedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-	  backgroundColor: Color(0xff3D496A),								 
+      backgroundColor: Color(0xff3D496A),
       appBar: AppBar(
         title: Text('Notice'),
-		backgroundColor: Color.fromRGBO(83, 94, 127, 1.0),												  
+        backgroundColor: Color.fromRGBO(83, 94, 127, 1.0),
       ),
       body: Container(
         child: Padding(
@@ -34,15 +34,15 @@ class _PinnedPageState extends State<PinnedPage> {
           child: Column(
             children: <Widget>[
               Text(
-                _pinnedNotice.title ?? "",				 										  										
+                _pinnedNotice.title ?? "",
                 style: TextStyle(
                     fontFamily: 'Segoeui',
                     color: Colors.white,
                     fontSize: SizeConfig.textMultiplier * 2.6,
                     fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.w600),																							 
+                    fontWeight: FontWeight.w600),
               ),
-			  SizedBox(height: 20),			  
+              SizedBox(height: 20),
               Container(
                 margin: EdgeInsets.only(left: 3, right: 3, bottom: 17),
                 width: double.infinity,
@@ -64,18 +64,6 @@ class _PinnedPageState extends State<PinnedPage> {
                   onLoaded: () {},
                 ),
               )
-              // Divider(
-              //   color: Colors.white,
-              //   thickness: 2,
-              // ),
-              /*  Text(
-                _pinnedNotice.contents ?? "",
-                style: TextStyle(
-                    fontFamily: 'Segoeui',
-                    color: Colors.white,
-                    fontSize: SizeConfig.textMultiplier * 2.5,
-                    fontWeight: FontWeight.w400),
-              ),*/  
             ],
           ),
         ),

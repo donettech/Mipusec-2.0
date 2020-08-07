@@ -41,8 +41,7 @@ class _AdvertisementPageState extends State<AdvertisementPage> {
   bool isSearching = false;
   bool expanded = false;
   bool isLoading = true;
-//https://github.com/xuala69/Mipusec-2.0.git
-  getAds() async {
+   getAds() async {
     List<AdvertisementModel> mAds = [];
     var response = await http.get(url);
     var mdata = json.decode(response.body);
@@ -137,7 +136,7 @@ class _AdvertisementPageState extends State<AdvertisementPage> {
     if (await mDirectory.exists()) {
       setState(() {
         file = Directory("$directory/Advertisements/")
-            .listSync(); //use your folder name instead of resume.
+            .listSync();  
         compare();
       });
     } else {
@@ -382,15 +381,7 @@ class _AdvertisementPageState extends State<AdvertisementPage> {
                               size: 12,
                             )
                           : downloadingIcon(link,
-                              title) /* GestureDetector(
-                              onTap: () {},
-                              child: new Image.asset("assets/ic_download.png",
-                                  height: 12.0)) */
-                      /* IconButton(
-                            onPressed: () {},
-                            icon: Icon(Icons.file_download),
-                            iconSize: 15,
-                          ), */
+                              title)  
                     ],
                   )),
                 ],
