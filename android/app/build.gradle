@@ -80,5 +80,7 @@ flutter {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "com.google.firebase:firebase-messaging:20.1.6"
+    implementation implementation('com.github.barteksc:android-pdf-viewer:2.8.2'){ 
+    force = true }
 }
 apply plugin: 'com.google.gms.google-services'

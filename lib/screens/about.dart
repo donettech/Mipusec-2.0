@@ -1,9 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:mipusec2/screens/privacyPolicy.dart';
 
 import 'package:mipusec2/utilities/clipper.dart';
 import 'package:mipusec2/utils/size_config.dart';
+import 'package:package_info/package_info.dart';
 
-class AboutPage extends StatelessWidget {
+class AboutPage extends StatefulWidget {
+  @override
+  _AboutPageState createState() => _AboutPageState();
+}
+
+class _AboutPageState extends State<AboutPage> {
+  String appName;
+  String packageName;
+  String version;
+  String buildNumber;
+
+  @override
+  void initState() {
+    super.initState();
+    getPackage();
+  }
+
+  void getPackage() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    appName = packageInfo.appName;
+    packageName = packageInfo.packageName;
+    version = packageInfo.version;
+    buildNumber = packageInfo.buildNumber;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -30,7 +56,6 @@ class AboutPage extends StatelessWidget {
                                     clipper: BottomWaveClipper(),
                                     child: Container(
                                       color: Color(0xff3D496A),
-                                      
                                     ),
                                   ),
                                   Positioned(
@@ -111,6 +136,32 @@ class AboutPage extends StatelessWidget {
                       ),
                     ),
                     Positioned(
+                      right: 0,
+                      top: 5,
+                      child: GestureDetector(
+                        onTap: () {
+                          showAboutDialog(
+                            context: context,
+                            applicationName: appName,
+                            applicationVersion: version,
+                            applicationIcon: Image.asset(
+                              'assets/mpsc_icon_round.png',
+                              width: 30,
+                              height: 30,
+                              fit: BoxFit.scaleDown,
+                            ),
+                            // children: [Text(buildNumber)],
+                          );
+                        },
+                        child: Text('app info',
+                            style: TextStyle(
+                              fontFamily: 'Segoeui',
+                              fontSize: 15,
+                              color: Colors.white,
+                            )),
+                      ),
+                    ),
+                    Positioned(
                         left: 0,
                         top: 5,
                         child: IconButton(
@@ -148,7 +199,7 @@ class AboutPage extends StatelessWidget {
                                             elevation: 5,
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(45)), 
+                                                    BorderRadius.circular(45)),
                                             child: Image.asset(
                                               'assets/jesda.png',
                                               width: MediaQuery.of(context)
@@ -212,7 +263,26 @@ class AboutPage extends StatelessWidget {
                                       ),
                                     ),
                                     Container(),
-                                    Container()
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        FlatButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (_) =>
+                                                          PrivacyPolicyPage()));
+                                            },
+                                            child: Text('Privacy Policy',
+                                                style: TextStyle(
+                                                  fontFamily: 'Segoeui',
+                                                  fontSize: 15,
+                                                  color: Colors.blue,
+                                                ))),
+                                      ],
+                                    )
                                   ],
                                 ),
                               )),
