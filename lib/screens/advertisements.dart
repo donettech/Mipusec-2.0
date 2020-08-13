@@ -41,7 +41,7 @@ class _AdvertisementPageState extends State<AdvertisementPage> {
   bool isSearching = false;
   bool expanded = false;
   bool isLoading = true;
-   getAds() async {
+  getAds() async {
     List<AdvertisementModel> mAds = [];
     var response = await http.get(url);
     var mdata = json.decode(response.body);
@@ -135,8 +135,7 @@ class _AdvertisementPageState extends State<AdvertisementPage> {
     final Directory mDirectory = Directory('$directory/$folderName/');
     if (await mDirectory.exists()) {
       setState(() {
-        file = Directory("$directory/Advertisements/")
-            .listSync();  
+        file = Directory("$directory/Advertisements/").listSync();
         compare();
       });
     } else {
@@ -322,8 +321,8 @@ class _AdvertisementPageState extends State<AdvertisementPage> {
   Widget downloadingIcon(String link, String title) {
     if (downloading) {
       return Container(
-          height: 12.0,
-          width: 12.0,
+          height: 16.0,
+          width: 16.0,
           child: CircularProgressIndicator(
             strokeWidth: 1,
           ));
@@ -333,7 +332,7 @@ class _AdvertisementPageState extends State<AdvertisementPage> {
             downloading = true;
             downloadFile(link, title);
           },
-          child: new Image.asset("assets/ic_download.png", height: 12.0));
+          child: new Image.asset("assets/ic_download.png", height: 14.0));
     }
   }
 
@@ -380,8 +379,7 @@ class _AdvertisementPageState extends State<AdvertisementPage> {
                               Icons.check,
                               size: 12,
                             )
-                          : downloadingIcon(link,
-                              title)  
+                          : downloadingIcon(link, title)
                     ],
                   )),
                 ],
@@ -448,9 +446,8 @@ class _AdvertisementPageState extends State<AdvertisementPage> {
                     Navigator.push(
                         context,
                         new MaterialPageRoute(
-                            builder: (context) => new PDFPage(
-                                iSubAds[indx].localLink,
-                                iSubAds[indx].downloaded)));
+                            builder: (context) =>
+                                new PDFPage(iSubAds[indx].link, false)));
                   } else {
                     Navigator.push(
                         context,

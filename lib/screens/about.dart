@@ -136,32 +136,6 @@ class _AboutPageState extends State<AboutPage> {
                       ),
                     ),
                     Positioned(
-                      right: 0,
-                      top: 5,
-                      child: GestureDetector(
-                        onTap: () {
-                          showAboutDialog(
-                            context: context,
-                            applicationName: appName,
-                            applicationVersion: version,
-                            applicationIcon: Image.asset(
-                              'assets/mpsc_icon_round.png',
-                              width: 30,
-                              height: 30,
-                              fit: BoxFit.scaleDown,
-                            ),
-                            // children: [Text(buildNumber)],
-                          );
-                        },
-                        child: Text('app info',
-                            style: TextStyle(
-                              fontFamily: 'Segoeui',
-                              fontSize: 15,
-                              color: Colors.white,
-                            )),
-                      ),
-                    ),
-                    Positioned(
                         left: 0,
                         top: 5,
                         child: IconButton(

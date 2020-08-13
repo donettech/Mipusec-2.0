@@ -241,9 +241,8 @@ class _HomePageState extends State<HomePage> {
                                             new MaterialPageRoute(
                                                 builder: (context) =>
                                                     new PDFPage(
-                                                        mData[index].localLink,
-                                                        mData[index]
-                                                            .downloaded)));
+                                                        mData[index].link,
+                                                        false)));
                                       } else {
                                         Navigator.push(
                                             context,
@@ -251,8 +250,7 @@ class _HomePageState extends State<HomePage> {
                                                 builder: (context) =>
                                                     new PDFPage(
                                                         mData[index].link,
-                                                        mData[index]
-                                                            .downloaded)));
+                                                        false)));
                                       }
                                     },
                                     child: Container(

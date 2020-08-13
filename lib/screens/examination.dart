@@ -262,7 +262,7 @@ class _ExaminationPageState extends State<ExaminationPage> {
               );
             }
           },
-          child: new Image.asset("assets/ic_download.png", height: 12.0));
+          child: new Image.asset("assets/ic_download.png", height: 14.0));
     }
   }
 
@@ -386,9 +386,8 @@ class _ExaminationPageState extends State<ExaminationPage> {
                       Navigator.push(
                           context,
                           new MaterialPageRoute(
-                              builder: (context) => new PDFPage(
-                                  iSubExams[indx].localLink,
-                                  iSubExams[indx].downloaded)));
+                              builder: (context) =>
+                                  new PDFPage(iSubExams[indx].link, false)));
                     } else {
                       Navigator.push(
                           context,
@@ -434,8 +433,7 @@ class _ExaminationPageState extends State<ExaminationPage> {
                           context,
                           new MaterialPageRoute(
                               builder: (context) => new PDFPage(
-                                  examModel.subModel[indx].localLink,
-                                  examModel.subModel[indx].downloaded)));
+                                  examModel.subModel[indx].link, false)));
                     } else {
                       Navigator.push(
                           context,

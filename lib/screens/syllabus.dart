@@ -219,7 +219,7 @@ class _SyllabusPageState extends State<SyllabusPage> {
                             onChanged: (value) {
                               _filterSyllabus(value);
                             },
-							style: TextStyle(
+                            style: TextStyle(
                                 fontFamily: 'Segoeui', color: Colors.white),
                             decoration: InputDecoration(
                                 icon: Icon(
@@ -264,17 +264,15 @@ class _SyllabusPageState extends State<SyllabusPage> {
                                   context,
                                   new MaterialPageRoute(
                                       builder: (context) => new PDFPage(
-                                          filteredSyllabusList[indx].localLink,
-                                          filteredSyllabusList[indx]
-                                              .downloaded)));
-                            } else { 
+                                          filteredSyllabusList[indx].link,
+                                          false)));
+                            } else {
                               Navigator.push(
                                   context,
                                   new MaterialPageRoute(
                                       builder: (context) => new PDFPage(
                                           filteredSyllabusList[indx].link,
-                                          filteredSyllabusList[indx]
-                                              .downloaded)));
+                                          false)));
                             }
                           },
                           child: singleItem(
@@ -307,7 +305,7 @@ class _SyllabusPageState extends State<SyllabusPage> {
                   new Text(title,
                       textAlign: TextAlign.justify,
                       style: TextStyle(
-						  fontFamily: 'Segoeui',					
+                          fontFamily: 'Segoeui',
                           fontSize: SizeConfig.textMultiplier * 2.19,
                           color: Colors.white,
                           fontWeight: FontWeight.w600)),
@@ -358,7 +356,7 @@ class _SyllabusPageState extends State<SyllabusPage> {
             downloading = true;
             downloadFile(link, title);
           },
-          child: new Image.asset("assets/ic_download.png", height: 12.0));
+          child: new Image.asset("assets/ic_download.png", height: 14.0));
     }
   }
 
@@ -380,7 +378,7 @@ class _SyllabusPageState extends State<SyllabusPage> {
             Color.fromRGBO(102, 114, 150, 1.0),
             Color.fromRGBO(70, 80, 110, 1.0)
           ],
-        ),  
+        ),
         shape: BoxShape.rectangle,
         borderRadius: new BorderRadius.circular(8.0),
         boxShadow: <BoxShadow>[

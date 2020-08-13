@@ -277,7 +277,7 @@ class _NoticePageState extends State<NoticePage> {
             downloading = true;
             downloadFile(link, title);
           },
-          child: new Image.asset("assets/ic_download.png", height: 12.0));
+          child: new Image.asset("assets/ic_download.png", height: 14.0));
     }
   }
 
@@ -379,9 +379,8 @@ class _NoticePageState extends State<NoticePage> {
                       Navigator.push(
                           context,
                           new MaterialPageRoute(
-                              builder: (context) => new PDFPage(
-                                  iSubResult[indx].localLink,
-                                  iSubResult[indx].downloaded)));
+                              builder: (context) =>
+                                  new PDFPage(iSubResult[indx].link, false)));
                     } else {
                       Navigator.push(
                           context,
